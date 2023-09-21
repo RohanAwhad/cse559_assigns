@@ -1,0 +1,291 @@
+Question 1:
+	How many open reading frames are present in the following DNA sequence (assume the start codon ATG and the stop codon TAA)? Please highlight where all these ORFs occur. "ATGCATCATGGATGTTAATGTAACCGTCTAACTAA"
+
+Answer:
+    - ATGCATCATGGATGTTAA
+    - ATGGATGTTAATGTAACCGTCTAA
+    - ATGTTAATGTAA
+    - ATGTAA
+---
+Question 2:
+    A "palindrome" is a DNA sequence that is equal to its reverse complement. Please construct a palindrome of length 8 that uses all of the 4 DNA letter
+
+Answer:
+    AAAATTTT
+    AAATATTT
+    AAAGCTTT
+    AAACGTTT
+    AATATATT
+    AATTAATT
+    AATGCATT
+    AATCGATT
+    AAGATCTT
+    AAGTACTT
+    AAGGCCTT
+    AAGCGCTT
+    AACATGTT
+    AACTAGTT
+    AACGCGTT
+    AACCGGTT
+    ATAATTAT
+    ATATATAT
+    ATAGCTAT
+    ATACGTAT
+    ATTATAAT
+    ATTTAAAT
+    ATTGCAAT
+    ATTCGAAT
+    ATGATCAT
+    ATGTACAT
+    ATGGCCAT
+    ATGCGCAT
+    ATCATGAT
+    ATCTAGAT
+    ATCGCGAT
+    ATCCGGAT
+    AGAATTCT
+    AGATATCT
+    AGAGCTCT
+    AGACGTCT
+    AGTATACT
+    AGTTAACT
+    AGTGCACT
+    AGTCGACT
+    AGGATCCT
+    AGGTACCT
+    AGGGCCCT
+    AGGCGCCT
+    AGCATGCT
+    AGCTAGCT
+    AGCGCGCT
+    AGCCGGCT
+    ACAATTGT
+    ACATATGT
+    ACAGCTGT
+    ACACGTGT
+    ACTATAGT
+    ACTTAAGT
+    ACTGCAGT
+    ACTCGAGT
+    ACGATCGT
+    ACGTACGT
+    ACGGCCGT
+    ACGCGCGT
+    ACCATGGT
+    ACCTAGGT
+    ACCGCGGT
+    ACCCGGGT
+    TAAATTTA
+    TAATATTA
+    TAAGCTTA
+    TAACGTTA
+    TATATATA
+    TATTAATA
+    TATGCATA
+    TATCGATA
+    TAGATCTA
+    TAGTACTA
+    TAGGCCTA
+    TAGCGCTA
+    TACATGTA
+    TACTAGTA
+    TACGCGTA
+    TACCGGTA
+    TTAATTAA
+    TTATATAA
+    TTAGCTAA
+    TTACGTAA
+    TTTATAAA
+    TTTTAAAA
+    TTTGCAAA
+    TTTCGAAA
+    TTGATCAA
+    TTGTACAA
+    TTGGCCAA
+    TTGCGCAA
+    TTCATGAA
+    TTCTAGAA
+    TTCGCGAA
+    TTCCGGAA
+    TGAATTCA
+    TGATATCA
+    TGAGCTCA
+    TGACGTCA
+    TGTATACA
+    TGTTAACA
+    TGTGCACA
+    TGTCGACA
+    TGGATCCA
+    TGGTACCA
+    TGGGCCCA
+    TGGCGCCA
+    TGCATGCA
+    TGCTAGCA
+    TGCGCGCA
+    TGCCGGCA
+    TCAATTGA
+    TCATATGA
+    TCAGCTGA
+    TCACGTGA
+    TCTATAGA
+    TCTTAAGA
+    TCTGCAGA
+    TCTCGAGA
+    TCGATCGA
+    TCGTACGA
+    TCGGCCGA
+    TCGCGCGA
+    TCCATGGA
+    TCCTAGGA
+    TCCGCGGA
+    TCCCGGGA
+    GAAATTTC
+    GAATATTC
+    GAAGCTTC
+    GAACGTTC
+    GATATATC
+    GATTAATC
+    GATGCATC
+    GATCGATC
+    GAGATCTC
+    GAGTACTC
+    GAGGCCTC
+    GAGCGCTC
+    GACATGTC
+    GACTAGTC
+    GACGCGTC
+    GACCGGTC
+    GTAATTAC
+    GTATATAC
+    GTAGCTAC
+    GTACGTAC
+    GTTATAAC
+    GTTTAAAC
+    GTTGCAAC
+    GTTCGAAC
+    GTGATCAC
+    GTGTACAC
+    GTGGCCAC
+    GTGCGCAC
+    GTCATGAC
+    GTCTAGAC
+    GTCGCGAC
+    GTCCGGAC
+    GGAATTCC
+    GGATATCC
+    GGAGCTCC
+    GGACGTCC
+    GGTATACC
+    GGTTAACC
+    GGTGCACC
+    GGTCGACC
+    GGGATCCC
+    GGGTACCC
+    GGGGCCCC
+    GGGCGCCC
+    GGCATGCC
+    GGCTAGCC
+    GGCGCGCC
+    GGCCGGCC
+    GCAATTGC
+    GCATATGC
+    GCAGCTGC
+    GCACGTGC
+    GCTATAGC
+    GCTTAAGC
+    GCTGCAGC
+    GCTCGAGC
+    GCGATCGC
+    GCGTACGC
+    GCGGCCGC
+    GCGCGCGC
+    GCCATGGC
+    GCCTAGGC
+    GCCGCGGC
+    GCCCGGGC
+    CAAATTTG
+    CAATATTG
+    CAAGCTTG
+    CAACGTTG
+    CATATATG
+    CATTAATG
+    CATGCATG
+    CATCGATG
+    CAGATCTG
+    CAGTACTG
+    CAGGCCTG
+    CAGCGCTG
+    CACATGTG
+    CACTAGTG
+    CACGCGTG
+    CACCGGTG
+    CTAATTAG
+    CTATATAG
+    CTAGCTAG
+    CTACGTAG
+    CTTATAAG
+    CTTTAAAG
+    CTTGCAAG
+    CTTCGAAG
+    CTGATCAG
+    CTGTACAG
+    CTGGCCAG
+    CTGCGCAG
+    CTCATGAG
+    CTCTAGAG
+    CTCGCGAG
+    CTCCGGAG
+    CGAATTCG
+    CGATATCG
+    CGAGCTCG
+    CGACGTCG
+    CGTATACG
+    CGTTAACG
+    CGTGCACG
+    CGTCGACG
+    CGGATCCG
+    CGGTACCG
+    CGGGCCCG
+    CGGCGCCG
+    CGCATGCG
+    CGCTAGCG
+    CGCGCGCG
+    CGCCGGCG
+    CCAATTGG
+    CCATATGG
+    CCAGCTGG
+    CCACGTGG
+    CCTATAGG
+    CCTTAAGG
+    CCTGCAGG
+    CCTCGAGG
+    CCGATCGG
+    CCGTACGG
+    CCGGCCGG
+    CCGCGCGG
+    CCCATGGG
+    CCCTAGGG
+    CCCGCGGG
+    CCCCGGGG
+
+---
+Question 3:
+    Assume you are trying to find out more information about a particular gene (say gene oprD) and the corresponding protein product. Which online biological database would you start with? (note: wikipedia is not an appropriate answer
+
+Answer:
+    - PubMed
+    - UniProt
+    - NCBI
+    - NIH
+    
+---
+Question 4:
+    a] -> Identify the longest open reading frame (ORF) in the following DNA sequence (note: start codon ATG, stop codons TAG, TGA, TAA) ATGATATGATGTCACAGGATGTAGATGCTCCGACATAAGCTTA
+    b] -> Pick one position in the ORF found above and indicate which type of mutation (insertion, deletion, or mutation) would be called a "frame-shift mutation". Briefly explain why
+
+Answer:
+    a]: 'ATGATGTCACAGGATGTAGATGCTCCGACATAA'
+    b]:
+        - Insertion mutation in between indices (6, 17) in above ORF would create a frame-shift mutation causing the seq to be shorter than the original one.
+        - For example, 'ATG ATG GTC <C>AC AGG ATG TAG', it was cut short because 'C' was inserted and as a result, TAG codon was read. 
+        
