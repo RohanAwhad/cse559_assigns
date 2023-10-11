@@ -1,0 +1,5 @@
+Given two linear sequences, X and Y
+
+Steps:
+  1. We can find z-array for both `X + <delim> + Y` & `Y + <delim> + X`
+  2. We can search for a pair of values, one from each of the z-array, such that, their addition is equal to `len(sequence)` and combining those 2 prefixes results in either of the sequences, X & Y.

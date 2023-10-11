@@ -4,3 +4,4 @@ examples
 samples
 logs
 outputs
+*.DS_Store
