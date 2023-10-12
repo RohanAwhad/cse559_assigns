@@ -1,5 +1,7 @@
 import os
 
+DEBUG = int(os.environ.get('DEBUG', 0))
+PROFILE = int(os.environ.get('PROFILE', 0))
 # for easier numpy calc & indexing
 A, C, T, G = 0, 1, 2, 3
 CHAR2IDX = {
