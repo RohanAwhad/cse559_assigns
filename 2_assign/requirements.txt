@@ -1,0 +1,6 @@
+typing-inspect==0.8.0
+numpy==1.23.5
+typing_extensions==4.8.0
+types-tqdm==4.65.0.1
+tqdm==4.65.0
+Cython==3.0.3

@@ -3,8 +3,10 @@
 import config
 import utils
 from print_statements import *
-from config import A, C, T, G, DEBUG
+from config import A, C, T, G, DEBUG, SAVE, OPTIMIZE
 
+
+import numpy as np
 import os
 import random
 import sys
@@ -13,6 +15,30 @@ from collections import Counter
 from tqdm import tqdm
 from typing import List, Tuple, Dict
 
+
+'''
+def _randomized_motif_search_jit(k: int, dna_strings: List[str]) -> Tuple[Tuple[str, ...], int]:
+  motif_set = []
+  for dna in dna_strings:
+    end = len(dna) - k
+    start_kmer = random.randint(0, end)
+    motif_set.append(dna[start_kmer: start_kmer+k])
+
+
+  motif_consensus = utils.get_motif_consensus(motif_set)
+  best_set = (tuple(motif_set), utils.get_motif_score(motif_set, motif_consensus))
+
+  motif_consensus = ''
+
+  while True:
+    profile_set: List[List[float]] = utils.get_profile(motif_set)
+    motif_set: List[str] = utils.get_motifs_from_profile(profile_set, dna_strings)
+    motif_consensus: str = utils.get_motif_consensus(motif_set)
+    motif_score: int = utils.get_motif_score(motif_set, motif_consensus)
+
+    if motif_score < best_set[1]: best_set = (tuple(motif_set), motif_score) # finding minima
+    else: return best_set
+'''
 
 def randomized_motif_search(k: int, dna_strings: List[str]) -> Tuple[Tuple[str, ...], int]:
   # make them curr best motifs
@@ -23,6 +49,9 @@ def randomized_motif_search(k: int, dna_strings: List[str]) -> Tuple[Tuple[str, 
   # else update best motif to curr motif
 
   # get random motifs from each dna string
+
+  #if OPTIMIZE > 1: return _randomized_motif_search_jit(k, dna_strings)
+
   if DEBUG > 0: print(f'len of a dna string: {len(dna_strings[0])}')
   motif_set = []
   for dna in dna_strings:
@@ -41,7 +70,15 @@ def randomized_motif_search(k: int, dna_strings: List[str]) -> Tuple[Tuple[str, 
   while True:
     profile_set = utils.get_profile(motif_set)
     if DEBUG > 0: print_profile_set(profile_set)
+
     motif_set = utils.get_motifs_from_profile(profile_set, dna_strings)
+    '''
+    if DEBUG > 0:
+    else:
+      profile_set = np.array(profile_set)
+      utils.get_motifs_from_profile(dna_strings, *profile_set)
+    '''
+
     if DEBUG > 0: print_motif_set('Intermediate motif set:', motif_set)
     motif_consensus = utils.get_motif_consensus(motif_set)
     motif_score = utils.get_motif_score(motif_set, motif_consensus)
@@ -67,7 +104,7 @@ def main():
   assert len(dna_strings) == t, f'number of dna strings {len(dna_strings)} != t ({t})'
 
   # 1500 runs
-  n = 15 if DEBUG > 0 else 1500
+  n = 15 if DEBUG > 1 else 1500
   pbar = range(n)
   if DEBUG == 0: pbar = tqdm(pbar, desc='Motif Search', total=n)
   best_sets = set()
@@ -78,7 +115,7 @@ def main():
   for mset in filter(lambda x: x[1] == best_in_1500[1], best_sets):
     print_motif_set(f"Best Motif set in {n:4d} runs:", mset[0])
     print(f'Motif Score: {mset[1]:3d}')
-    if DEBUG == 0:
+    if SAVE:
       # write to a file
       out_fn = config.OUT_FN_TMPLT.format(
         algo='randomized_motif_search',

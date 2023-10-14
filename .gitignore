@@ -1,7 +1,13 @@
 *.swp
+*.html
+*.so
+*.c
+*build
+stats*
 __pycache__
 examples
 samples
 logs
 outputs
 *.DS_Store
+*/assign_build
