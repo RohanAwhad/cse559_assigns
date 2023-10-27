@@ -20,4 +20,4 @@ def bwt_decode(s):
 
 if __name__ == '__main__':
   with open("test_1.txt", "r") as f: s = f.read()
-  with open("output_q1_rohan_awhad.txt", "w") as f: f.write(bwt_decode(s))
+  with open("output_q2_rohan_awhad.txt", "w") as f: f.write(bwt_decode(s))
