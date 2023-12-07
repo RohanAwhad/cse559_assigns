@@ -62,7 +62,10 @@ def main(k, data_points):
   list of list of float: The final centers of the clusters.
   """
   # Initialize centers randomly
-  centers = random.sample(data_points, k)
+  # centers = random.sample(data_points, k)
+  # select first k datapoints as centers
+  centers = data_points[:k]
+
 
   while True:
     # Assign each point to the closest center

@@ -87,15 +87,16 @@ def em_algorithm_soft_k_means(k, m, beta, data_points):
     n = len(data_points)
 
     # Randomly initialize the centers
-    centers = data_points[np.random.choice(n, k, replace=False)]
+    # centers = data_points[np.random.choice(n, k, replace=False)]
+    centers = data_points[:k]
 
     while True:
         # Expectation step: Calculate the Hidden Matrix for responsibilities
         hidden_matrix = np.zeros((k, n))
         for i in range(k):
             for j in range(n):
-                distance = np.linalg.norm(data_points[j] - centers[i])
-                hidden_matrix[i, j] = np.exp(-beta * distance)
+                dist = np.linalg.norm(data_points[j] - centers[i])
+                hidden_matrix[i, j] = np.exp(-beta * dist)
 
         # Normalize the Hidden Matrix row-wise
         row_sums = hidden_matrix.sum(axis=0)
@@ -115,6 +116,16 @@ def em_algorithm_soft_k_means(k, m, beta, data_points):
 
     return centers.tolist()
 
+def allclose(a, b, rtol=1e-05, atol=1e-08):
+  '''absolute(`a` - `b`) <= (`atol` + `rtol` * absolute(`b`))'''
+  res = all(
+     distance(a[i], b[i]) <= 1e-6
+      for i in range(len(a))
+  )
+
+  return bool(res)
+    
+
 def main(k, beta, data_points):
   """
   Implements the soft k-means clustering using Expectation-Maximization algorithm.
@@ -130,36 +141,36 @@ def main(k, beta, data_points):
   n = len(data_points)
 
   # Randomly initialize the centers
-  centers = random.sample(data_points, k)
+  # centers = random.sample(data_points, k)
+  centers = data_points[:k]
 
+  iterations = 0
   while True:
+    iterations += 1
     # Expectation step: Calculate the Hidden Matrix for responsibilities
-    hidden_matrix = []
+    hidden_matrix = [[0 for _ in range(n)] for _ in range(k)]
     for i in range(k):
-      row = []
       for j in range(n):
         distance_ij = distance(data_points[j], centers[i])
-        hidden_value = math.exp(-beta * distance_ij)
-        row.append(hidden_value)
-      hidden_matrix.append(row)
+        hidden_matrix[i][j] = math.exp(-beta * distance_ij)
 
     # Normalize the Hidden Matrix row-wise
     row_sums = [sum(hidden_matrix[i]) for i in range(k)]
     hidden_matrix = [[hidden_matrix[i][j] / row_sums[i] for j in range(n)] for i in range(k)]
 
     # Maximization step: Update the centers
-    new_centers = []
+    new_centers = [[0 for _ in range(len(data_points[0]))] for _ in range(k)]
     for i in range(k):
-      center = []
       for d in range(len(data_points[0])):
-        center_d = sum(hidden_matrix[i][j] * data_points[j][d] for j in range(n)) / sum(hidden_matrix[i])
-        center.append(center_d)
-      new_centers.append(center)
+        new_centers[i][d] = sum(hidden_matrix[i][j] * data_points[j][d] for j in range(n)) / sum(hidden_matrix[i])
 
     # Check for convergence (if centers do not change significantly)
     if all(distance(centers[i], new_centers[i]) < 1e-6 for i in range(k)): break
+    # if allclose(new_centers, centers): break
+    # if centers == new_centers: break
     else: centers = new_centers
 
+  print(f'Iterations: {iterations}')
   return centers
 
 
