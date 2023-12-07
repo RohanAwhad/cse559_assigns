@@ -44,6 +44,10 @@ def local_alignment_affine_gap(s1, s2, sigma, epsilon):
   X = [[0] * (len(s2)+1) for _ in range(len(s1)+1)]  # extension gap penalties in s1
   Y = [[0] * (len(s2)+1) for _ in range(len(s1)+1)]  # extension gap penalties in s2
 
+  M = [[0 for _ in range(len(s2)+1)] for _ in range(len(s1)+1)]
+  X = [[0 for _ in range(len(s2)+1)] for _ in range(len(s1)+1)]
+  Y = [[0 for _ in range(len(s2)+1)] for _ in range(len(s1)+1)]
+
   # instantiating first row and column of X and Y matrices
   # to -2*sigma
   for i in range(1, len(s2)+1):
@@ -54,6 +58,22 @@ def local_alignment_affine_gap(s1, s2, sigma, epsilon):
     Y[i][0] = -2*sigma
 
   max_val = (0, 0, 0)  # (value, i, j)
+
+  if DEBUG:
+    print('Pre Fill:')
+    print('---')
+    print('X:')
+    for i in range(len(s1)+1):
+      for j in range(len(s2)+1):
+        print(f'{X[i][j]:3d}', end='  ')
+      print()
+
+    print('---')
+    print('Y:')
+    for i in range(len(s1)+1):
+      for j in range(len(s2)+1):
+        print(f'{Y[i][j]:3d}', end='  ')
+      print()
 
   s1, s2 = s1.upper(), s2.upper()
   if DEBUG: print(s1 + '\n' + s2)
