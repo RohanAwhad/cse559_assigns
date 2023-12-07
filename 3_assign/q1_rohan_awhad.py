@@ -34,29 +34,29 @@ def global_alignment(s1, s2, gap_penalty):
   for j in range(len(s2) + 1): M[0][j] = -j * gap_penalty
 
   for i in range(1, len(s1) + 1):
-    for j in range(1, len(s2) + 1):
-      match = M[i - 1][j - 1] + blosum62_value(s1[i - 1], s2[j - 1])
-      delete = M[i - 1][j] - gap_penalty
-      insert = M[i][j - 1] - gap_penalty
-      M[i][j] = max(match, delete, insert)
+  for j in range(1, len(s2) + 1):
+    match = M[i - 1][j - 1] + blosum62_value(s1[i - 1], s2[j - 1])
+    delete = M[i - 1][j] - gap_penalty
+    insert = M[i][j - 1] - gap_penalty
+    M[i][j] = max(match, delete, insert)
 
   aligned_s1, aligned_s2 = "", ""
   i, j = len(s1), len(s2)
   while i > 0 or j > 0:
-    current_score = M[i][j]
-    if i > 0 and M[i - 1][j] - gap_penalty == current_score:
-      aligned_s1 += s1[i - 1]
-      aligned_s2 += '-'
-      i -= 1
-    elif j > 0 and M[i][j - 1] - gap_penalty == current_score:
-      aligned_s1 += '-'
-      aligned_s2 += s2[j - 1]
-      j -= 1
-    else:
-      aligned_s1 += s1[i - 1]
-      aligned_s2 += s2[j - 1]
-      i -= 1
-      j -= 1
+  current_score = M[i][j]
+  if i > 0 and M[i - 1][j] - gap_penalty == current_score:
+    aligned_s1 += s1[i - 1]
+    aligned_s2 += '-'
+    i -= 1
+  elif j > 0 and M[i][j - 1] - gap_penalty == current_score:
+    aligned_s1 += '-'
+    aligned_s2 += s2[j - 1]
+    j -= 1
+  else:
+    aligned_s1 += s1[i - 1]
+    aligned_s2 += s2[j - 1]
+    i -= 1
+    j -= 1
 
   return int(M[len(s1)][len(s2)]), aligned_s1[::-1], aligned_s2[::-1]
 
@@ -65,12 +65,12 @@ sequences = []
 with open('test_1.txt', 'r') as f:
   _tmp = None
   for x in f.read().split('\n'):
-    if not x: continue
-    if x.startswith('>'):
-      if _tmp is not None: sequences.append(''.join(_tmp))
-      _tmp = []
-      continue
-    _tmp.append(x)
+  if not x: continue
+  if x.startswith('>'):
+    if _tmp is not None: sequences.append(''.join(_tmp))
+    _tmp = []
+    continue
+  _tmp.append(x)
 
 if _tmp is not None and len(_tmp) > 0: sequences.append(''.join(_tmp))
 assert len(sequences) == 2, f'Expected 2 sequences, got {len(sequences)}'

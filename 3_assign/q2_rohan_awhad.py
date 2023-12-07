@@ -31,9 +31,9 @@ matrix = [
 if DEBUG:
   print('---')
   for i, x in enumerate(indices):
-    for j, y in enumerate(indices):
-      print(f'{x}{y}:{matrix[i][j]:3d}', end='  ')
-    print()
+  for j, y in enumerate(indices):
+    print(f'{x}{y}:{matrix[i][j]:3d}', end='  ')
+  print()
 
 
 indices = {x: i for i, x in enumerate(indices)}
@@ -51,71 +51,71 @@ def local_alignment_affine_gap(s1, s2, sigma, epsilon):
   # instantiating first row and column of X and Y matrices
   # to -2*sigma
   for i in range(1, len(s2)+1):
-    X[0][i] = -2*sigma
-    Y[0][i] = -2*sigma
+  X[0][i] = -2*sigma
+  Y[0][i] = -2*sigma
   for i in range(1, len(s1)+1):
-    X[i][0] = -2*sigma
-    Y[i][0] = -2*sigma
+  X[i][0] = -2*sigma
+  Y[i][0] = -2*sigma
 
   max_val = (0, 0, 0)  # (value, i, j)
 
   if DEBUG:
-    print('Pre Fill:')
-    print('---')
-    print('X:')
-    for i in range(len(s1)+1):
-      for j in range(len(s2)+1):
-        print(f'{X[i][j]:3d}', end='  ')
-      print()
+  print('Pre Fill:')
+  print('---')
+  print('X:')
+  for i in range(len(s1)+1):
+    for j in range(len(s2)+1):
+    print(f'{X[i][j]:3d}', end='  ')
+    print()
 
-    print('---')
-    print('Y:')
-    for i in range(len(s1)+1):
-      for j in range(len(s2)+1):
-        print(f'{Y[i][j]:3d}', end='  ')
-      print()
+  print('---')
+  print('Y:')
+  for i in range(len(s1)+1):
+    for j in range(len(s2)+1):
+    print(f'{Y[i][j]:3d}', end='  ')
+    print()
 
   s1, s2 = s1.upper(), s2.upper()
   if DEBUG: print(s1 + '\n' + s2)
   for i in range(1, len(s1)+1):
-    for j in range(1, len(s2)+1):
-      if i > 1 and j > 1:
-        X[i][j] = max(M[i-1][j] - sigma, X[i-1][j] - epsilon, 0)
-        Y[i][j] = max(M[i][j-1] - sigma, Y[i][j-1] - epsilon, 0)
+  for j in range(1, len(s2)+1):
+    if i > 1 and j > 1:
+    X[i][j] = max(M[i-1][j] - sigma, X[i-1][j] - epsilon, 0)
+    Y[i][j] = max(M[i][j-1] - sigma, Y[i][j-1] - epsilon, 0)
 
-      M[i][j] = max(
-        0,
-        M[i-1][j-1] + blosum62_value(s1[i-1], s2[j-1]),
-        X[i][j],
-        Y[i][j]
-      )
+    M[i][j] = max(
+    0,
+    M[i-1][j-1] + blosum62_value(s1[i-1], s2[j-1]),
+    X[i][j],
+    Y[i][j]
+    )
 
-      if M[i][j] > max_val[0]: max_val = (M[i][j], i, j)
+    if M[i][j] > max_val[0]: max_val = (M[i][j], i, j)
 
   # print X and Y matrices
   if DEBUG:
-    print('---')
-    print('X:')
-    for i in range(1, len(s1)+1):
-      for j in range(1, len(s2)+1):
-        print(f'{s1[i-1]}{s2[j-1]}:{X[i][j]:3d}', end='  ')
-      print()
+  print('---')
+  print('X:')
+  for i in range(1, len(s1)+1):
+    for j in range(1, len(s2)+1):
+    print(f'{s1[i-1]}{s2[j-1]}:{X[i][j]:3d}', end='  ')
+    print()
 
-    print('---')
-    print('Y:')
-    for i in range(1, len(s1)+1):
-      for j in range(1, len(s2)+1):
-        print(f'{s1[i-1]}{s2[j-1]}:{Y[i][j]:3d}', end='  ')
-      print()
+  print('---')
+  print('Y:')
+  for i in range(1, len(s1)+1):
+    for j in range(1, len(s2)+1):
+    print(f'{s1[i-1]}{s2[j-1]}:{Y[i][j]:3d}', end='  ')
+    print()
 
-    print('---')
-    print('M:')
-    for i in range(1, len(s1)+1):
-      for j in range(1, len(s2)+1):
-        print(f'{s1[i-1]}{s2[j-1]}:{M[i][j]:3d}', end='  ')
-      print()
+  print('---')
+  print('M:')
+  for i in range(1, len(s1)+1):
+    for j in range(1, len(s2)+1):
+    print(f'{s1[i-1]}{s2[j-1]}:{M[i][j]:3d}', end='  ')
+    print()
 
-    print('---')
+  print('---')
   
   # Traceback
   u1, u2 = [], []
@@ -123,23 +123,23 @@ def local_alignment_affine_gap(s1, s2, sigma, epsilon):
 
   #while M[i][j] != 0 and i > 0 and j > 0:
   while M[i][j] != 0:
-    #if M[i][j] == (X[i-1][j-1] + blosum62_value(s1[i-1], s2[j-1])):
-    if M[i][j] == X[i][j]:
-      u1.append(s1[i-1])
-      if DEBUG: print(s1[i-1], '-')
-      i -= 1
-    if M[i][j] == Y[i][j]:
-      u2.append(s2[j-1])
-      if DEBUG: print('-', s2[j-1])
-      j -= 1
-    if M[i][j] == (M[i-1][j-1] + blosum62_value(s1[i-1], s2[j-1])):
-      u1.append(s1[i-1])
-      u2.append(s2[j-1])
-      if DEBUG: print(s1[i-1], s2[j-1])
-      i -= 1
-      j -= 1
+  #if M[i][j] == (X[i-1][j-1] + blosum62_value(s1[i-1], s2[j-1])):
+  if M[i][j] == X[i][j]:
+    u1.append(s1[i-1])
+    if DEBUG: print(s1[i-1], '-')
+    i -= 1
+  if M[i][j] == Y[i][j]:
+    u2.append(s2[j-1])
+    if DEBUG: print('-', s2[j-1])
+    j -= 1
+  if M[i][j] == (M[i-1][j-1] + blosum62_value(s1[i-1], s2[j-1])):
+    u1.append(s1[i-1])
+    u2.append(s2[j-1])
+    if DEBUG: print(s1[i-1], s2[j-1])
+    i -= 1
+    j -= 1
 
-    if DEBUG: print('---')
+  if DEBUG: print('---')
 
 
   if DEBUG: print(max_val)
@@ -152,12 +152,12 @@ sequences = []
 with open('test_1.txt', 'r') as f:
   _tmp = None
   for x in f.read().split('\n'):
-    if not x: continue
-    if x.startswith('>'):
-      if _tmp is not None: sequences.append(''.join(_tmp))
-      _tmp = []
-      continue
-    _tmp.append(x)
+  if not x: continue
+  if x.startswith('>'):
+    if _tmp is not None: sequences.append(''.join(_tmp))
+    _tmp = []
+    continue
+  _tmp.append(x)
 
 if _tmp is not None and len(_tmp) > 0: sequences.append(''.join(_tmp))
 assert len(sequences) == 2, f'Expected 2 sequences, got {len(sequences)}'
