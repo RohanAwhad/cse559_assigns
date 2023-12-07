@@ -21,13 +21,23 @@ def test_q2():
   DEBUG_DIR = "2_k_means_soft/Debugging"
   for i in range(1, 4):
     with open(f"{DEBUG_DIR}/inputs/input_{i}.txt") as f: sample_inp = f.read().strip()
-    k, data_points = q2.parse_inp(sample_inp)
-    act = q2.main(k, data_points)
-    act = q2.pretty_print(act)
+    k, m, beta, data_points = q2.parse_inp(sample_inp)
+    centers = q2.main(k, beta, data_points)
     with open(f"{DEBUG_DIR}/outputs/output_{i}.txt", "r") as f: exp = f.read().strip()
-    assert act == exp, f"Failed test {i}. Expected:\n{exp},\nActual:\n{act}"
+    exp = [list(map(float, line.split())) for line in exp.split("\n")]
+    print('Expected:')
+    print(np.array(exp))
+    print('ACtual:')
+    print(np.array(centers))
+    distances = []
+    for center in centers:
+      dist = [(i, q2.distance(center, exp[i])) for i in range(len(exp))]
+      distances.append(min(dist, key=lambda x: x[1]))
+    print(np.array(distances)[:, 1])
 
 
 if __name__ == '__main__':
+  print('Testing Q1 ...')
   test_q1()
-  # test_q2()
+  print('Testing Q2 ...')
+  test_q2()

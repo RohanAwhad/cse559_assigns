@@ -80,7 +80,7 @@ def main(k, data_points):
       new_centers.append(new_center)
 
     # Check for convergence (if centers do not change)
-    if centers == new_centers: break
+    if all(distance(centers[i], new_centers[i]) < 1e-6 for i in range(k)): break
     else: centers = new_centers
 
   return centers
