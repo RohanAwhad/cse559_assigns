@@ -65,63 +65,6 @@ def distance(point1, point2):
   """
   return math.sqrt(sum((p1 - p2) ** 2 for p1, p2 in zip(point1, point2)))
 
-
-def em_algorithm_soft_k_means(k, m, beta, data_points):
-    import numpy as np
-    """
-    Implements the soft k-means clustering using Expectation-Maximization algorithm.
-
-    Args:
-    k (int): The number of clusters.
-    m (int): The number of dimensions for the data points.
-    beta (float): The stiffness parameter for soft assignment.
-    data_points (list of list of float): The data points.
-
-    Returns:
-    list of list of float: The final centers of the clusters.
-    """
-    # Convert data points to numpy array
-    data_points = np.array(data_points)
-    n = len(data_points)
-
-    # Randomly initialize the centers
-    # centers = data_points[np.random.choice(n, k, replace=False)]
-    centers = data_points[:k]
-
-    while True:
-        # Expectation step: Calculate the Hidden Matrix for responsibilities
-        hidden_matrix = np.zeros((k, n))
-        for i in range(k):
-            for j in range(n):
-                dist = np.linalg.norm(data_points[j] - centers[i])
-                hidden_matrix[i, j] = np.exp(-beta * dist)
-
-        # Normalize the Hidden Matrix row-wise
-        row_sums = hidden_matrix.sum(axis=0)
-        hidden_matrix /= row_sums
-
-        # Maximization step: Update the centers
-        new_centers = np.zeros((k, m))
-        for i in range(k):
-            for j in range(m):
-                new_centers[i, j] = np.dot(hidden_matrix[i], data_points[:, j]) / np.sum(hidden_matrix[i])
-
-        # Check for convergence (if centers do not change significantly)
-        if np.allclose(centers, new_centers):
-            break
-        else:
-            centers = new_centers
-
-    return centers.tolist()
-
-
-def pretty_print(centers):
-  ret = ""
-  for centroid in centers:
-    for i in range(len(centroid)): ret += f'{centroid[i]:.3f} '
-    ret += "\n"
-  return ret
-
 def dot_product(v1, v2):
   """Calculate the dot product of two vectors."""
   return sum(p1 * p2 for p1, p2 in zip(v1, v2))
@@ -139,8 +82,6 @@ def main(k, m, beta, data_points):
   Returns:
   list of list of float: The final centers of the clusters.
   """
-
-
   # Initialize centers (using first k data points)
   centers = data_points[:k]
 
@@ -172,19 +113,17 @@ def main(k, m, beta, data_points):
 
   return centers
 
-if __name__ == '__main__':
-  # Example usage
-  k, m = 3, 2  # 3 clusters, 2 dimensions
-  beta = 2.0  # Stiffness parameter
-  data_points = [[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0], [20, 2], [20, 4], [20, 0]]
+def pretty_print(centers):
+  ret = ""
+  for centroid in centers:
+    for i in range(len(centroid)): ret += f'{centroid[i]:.3f} '
+    ret += "\n"
+  return ret
 
-  # Run EM algorithm for soft k-means clustering without NumPy
-  centers = em_algorithm_soft_k_means(k, m, beta, data_points)
-  print(centers)
-  print(py_em_algorithm_soft_k_means(k, m, beta, data_points))
-  exit(0)
+
+if __name__ == '__main__':
   with open("test_1.txt") as f: sample_inp = f.read().strip()
   k, m, beta, data_points = parse_inp(sample_inp)
-  centers = main(k, beta, data_points)
+  centers = main(k, m, beta, data_points)
   output = pretty_print(centers)
   with open("output_q2_rohan_awhad.txt", "w") as f: f.write(output)
