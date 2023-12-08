@@ -28,8 +28,6 @@ value for a dimension of a data point in Euclidean space.
 center), each containing m coordinate values for the center
 """
 import math
-import random
-
 
 def parse_inp(inp_str):
   '''
@@ -116,63 +114,6 @@ def em_algorithm_soft_k_means(k, m, beta, data_points):
 
     return centers.tolist()
 
-def allclose(a, b, rtol=1e-05, atol=1e-08):
-  '''absolute(`a` - `b`) <= (`atol` + `rtol` * absolute(`b`))'''
-  res = all(
-     distance(a[i], b[i]) <= 1e-6
-      for i in range(len(a))
-  )
-
-  return bool(res)
-    
-
-def main(k, beta, data_points):
-  """
-  Implements the soft k-means clustering using Expectation-Maximization algorithm.
-
-  Args:
-  k (int): The number of clusters.
-  beta (float): The stiffness parameter for soft assignment.
-  data_points (list of list of float): The data points.
-
-  Returns:
-  list of list of float: The final centers of the clusters.
-  """
-  n = len(data_points)
-
-  # Randomly initialize the centers
-  # centers = random.sample(data_points, k)
-  centers = data_points[:k]
-
-  iterations = 0
-  while True:
-    iterations += 1
-    # Expectation step: Calculate the Hidden Matrix for responsibilities
-    hidden_matrix = [[0 for _ in range(n)] for _ in range(k)]
-    for i in range(k):
-      for j in range(n):
-        distance_ij = distance(data_points[j], centers[i])
-        hidden_matrix[i][j] = math.exp(-beta * distance_ij)
-
-    # Normalize the Hidden Matrix row-wise
-    row_sums = [sum(hidden_matrix[i]) for i in range(k)]
-    hidden_matrix = [[hidden_matrix[i][j] / row_sums[i] for j in range(n)] for i in range(k)]
-
-    # Maximization step: Update the centers
-    new_centers = [[0 for _ in range(len(data_points[0]))] for _ in range(k)]
-    for i in range(k):
-      for d in range(len(data_points[0])):
-        new_centers[i][d] = sum(hidden_matrix[i][j] * data_points[j][d] for j in range(n)) / sum(hidden_matrix[i])
-
-    # Check for convergence (if centers do not change significantly)
-    if all(distance(centers[i], new_centers[i]) < 1e-6 for i in range(k)): break
-    # if allclose(new_centers, centers): break
-    # if centers == new_centers: break
-    else: centers = new_centers
-
-  print(f'Iterations: {iterations}')
-  return centers
-
 
 def pretty_print(centers):
   ret = ""
@@ -181,7 +122,67 @@ def pretty_print(centers):
     ret += "\n"
   return ret
 
+def dot_product(v1, v2):
+  """Calculate the dot product of two vectors."""
+  return sum(p1 * p2 for p1, p2 in zip(v1, v2))
+
+def main(k, m, beta, data_points):
+  """
+  Implements the soft k-means clustering using Expectation-Maximization algorithm without NumPy.
+
+  Args:
+  k (int): The number of clusters.
+  m (int): The number of dimensions for the data points.
+  beta (float): The stiffness parameter for soft assignment.
+  data_points (list of list of float): The data points.
+
+  Returns:
+  list of list of float: The final centers of the clusters.
+  """
+
+
+  # Initialize centers (using first k data points)
+  centers = data_points[:k]
+
+  while True:
+    # Expectation step: Calculate the Hidden Matrix for responsibilities
+    hidden_matrix = [[0 for _ in range(len(data_points))] for _ in range(k)]
+    for i in range(k):
+      for j in range(len(data_points)):
+        dist = distance(data_points[j], centers[i])
+        hidden_matrix[i][j] = math.exp(-beta * dist)
+
+    # Normalize the Hidden Matrix row-wise
+    for j in range(len(data_points)):
+      row_sum = sum(hidden_matrix[i][j] for i in range(k))
+      for i in range(k):
+        hidden_matrix[i][j] /= row_sum
+
+    # Maximization step: Update the centers
+    new_centers = [[0 for _ in range(m)] for _ in range(k)]
+    for i in range(k):
+      for j in range(m):
+        numerator = dot_product(hidden_matrix[i], [data_points[p][j] for p in range(len(data_points))])
+        denominator = sum(hidden_matrix[i])
+        new_centers[i][j] = numerator / denominator if denominator != 0 else 0
+
+    # Check for convergence (if centers do not change significantly)
+    if all(all(abs(new_centers[i][j] - centers[i][j]) < 1e-4 for j in range(m)) for i in range(k)): break
+    else: centers = new_centers
+
+  return centers
+
 if __name__ == '__main__':
+  # Example usage
+  k, m = 3, 2  # 3 clusters, 2 dimensions
+  beta = 2.0  # Stiffness parameter
+  data_points = [[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0], [20, 2], [20, 4], [20, 0]]
+
+  # Run EM algorithm for soft k-means clustering without NumPy
+  centers = em_algorithm_soft_k_means(k, m, beta, data_points)
+  print(centers)
+  print(py_em_algorithm_soft_k_means(k, m, beta, data_points))
+  exit(0)
   with open("test_1.txt") as f: sample_inp = f.read().strip()
   k, m, beta, data_points = parse_inp(sample_inp)
   centers = main(k, beta, data_points)
